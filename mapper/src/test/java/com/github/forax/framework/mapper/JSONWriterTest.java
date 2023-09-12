@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SuppressWarnings({"unused", "static-method"})
 public class JSONWriterTest {
-  /*
+
   @Nested
   public class Q1 {
     @Test @Tag("Q1")
@@ -138,7 +138,7 @@ public class JSONWriterTest {
     }
   }
 
-
+/*
   @Nested
   public class Q5 {
     @Test @Tag("Q5")
@@ -176,7 +176,7 @@ public class JSONWriterTest {
     }
 
   } // end of Q5
-
+*/
   @Nested
   public class Q6 {
     @Test @Tag("Q6")
@@ -202,7 +202,7 @@ public class JSONWriterTest {
   }
 
   public record PersonInfo(@JSONProperty("birth-day") MonthDay birthday, AddressInfo address) { }
-
+  /*
   @Nested
   public class Q7 {
     @Test @Tag("Q7")
