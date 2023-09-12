@@ -4,13 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74bd28e4-ede9-4bbb-a92f-dae249a45c06" name="Changes" comment="update to Java 21">
-      <change afterPath="$PROJECT_DIR$/mapper/src/main/java/com/github/forax/framework/mapper/Generator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="74bd28e4-ede9-4bbb-a92f-dae249a45c06" name="Changes" comment="tp mapper part 1">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapper/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/mapper/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mapper/src/main/java/com/github/forax/framework/mapper/JSONWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapper/src/main/java/com/github/forax/framework/mapper/JSONWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mapper/src/test/java/com/github/forax/framework/mapper/JSONWriterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/mapper/src/test/java/com/github/forax/framework/mapper/JSONWriterTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -184,7 +180,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1694502956778</updated>
-      <workItem from="1694504309150" duration="8965000" />
+      <workItem from="1694504309150" duration="9283000" />
     </task>
     <task id="LOCAL-00001" summary="update to Java 21">
       <created>1694503015561</created>
@@ -193,7 +189,15 @@
       <option name="project" value="LOCAL" />
       <updated>1694503015561</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="tp mapper part 1">
+      <option name="closed" value="true" />
+      <created>1694513324162</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1694513324162</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -212,7 +216,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="update README.md" />
     <MESSAGE value="add IDEA files" />
     <MESSAGE value="add support of Github action" />
     <MESSAGE value="update IDEA files" />
@@ -237,6 +240,7 @@
     <MESSAGE value="run CI with Java 19" />
     <MESSAGE value="fix typo" />
     <MESSAGE value="update to Java 21" />
-    <option name="LAST_COMMIT_MESSAGE" value="update to Java 21" />
+    <MESSAGE value="tp mapper part 1" />
+    <option name="LAST_COMMIT_MESSAGE" value="tp mapper part 1" />
   </component>
 </project>

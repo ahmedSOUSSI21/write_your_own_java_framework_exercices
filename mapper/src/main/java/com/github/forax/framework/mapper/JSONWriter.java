@@ -23,15 +23,8 @@ public final class JSONWriter {
               .<Generator>map(property ->{
                 var method = property.getReadMethod();
                 var annotation = method.getAnnotation(JSONProperty.class);
-                String name;
-                if (annotation != null){
-                  name = annotation.value();
-                }
-                else{
-                  name = property.getName();
-                }
+                var  name = annotation != null? annotation.value() : property.getName();
                 var key = "\"" + name + "\": ";
-
                 return ((writer, o) -> {
                   return key + writer.toJSON(Utils.invokeMethod(o, method));
                 });
