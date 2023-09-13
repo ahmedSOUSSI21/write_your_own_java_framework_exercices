@@ -202,7 +202,7 @@ public class JSONWriterTest {
   }
 
   public record PersonInfo(@JSONProperty("birth-day") MonthDay birthday, AddressInfo address) { }
-  /*
+  
   @Nested
   public class Q7 {
     @Test @Tag("Q7")
@@ -238,7 +238,7 @@ public class JSONWriterTest {
           """,
           json);
     }
-
+    /*
     @Test @Tag("Q7")
     public void toJSONFullExample() {
       var writer = new JSONWriter();
@@ -250,7 +250,7 @@ public class JSONWriterTest {
           """,
           json);
     }
-
+	*/
   }  // end of Q7
- */
+ 
 }
