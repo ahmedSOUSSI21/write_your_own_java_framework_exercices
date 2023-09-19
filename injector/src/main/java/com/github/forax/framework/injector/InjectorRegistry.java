@@ -56,6 +56,7 @@ public final class InjectorRegistry {
     }
 
     public <T> void registerProviderClass(Class<T> providerClass){
+        Objects.requireNonNull(providerClass);
         registerProviderClass(providerClass, providerClass);
     }
     private static <T> Optional<Constructor<?>> findInjectableConstructor(Class<? extends T> providerClass) {
