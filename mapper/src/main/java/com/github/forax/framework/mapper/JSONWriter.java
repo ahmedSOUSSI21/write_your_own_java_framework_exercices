@@ -64,5 +64,4 @@ public final class JSONWriter {
       default -> toJsonBean(o);
     };
   }
-
 }
