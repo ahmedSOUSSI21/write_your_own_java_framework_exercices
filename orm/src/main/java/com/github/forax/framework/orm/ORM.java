@@ -19,13 +19,14 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public final class ORM {
   private ORM() {
     throw new AssertionError();
   }
-
+  private static ThreadLocal<Connection> threadLocalConnection = new ThreadLocal<>();
   @FunctionalInterface
   public interface TransactionBlock {
     void run() throws SQLException;
@@ -71,8 +72,81 @@ public final class ORM {
     }
   }
 
+  public static void transaction(DataSource dataSource, TransactionBlock block) throws SQLException {
+    Objects.requireNonNull(dataSource);
+    Objects.requireNonNull(block);
+    Connection connection = null;
+    try {
+      connection = dataSource.getConnection();
+      connection.setAutoCommit(false); // Start a transaction
+      threadLocalConnection.set(connection); // Store the connection in ThreadLocal
+      block.run(); // Execute the transaction block
+      connection.commit(); // Commit the transaction
+    } catch (SQLException e) {
+      // Handle SQL exceptions
+        if (connection != null) {
+          connection.rollback(); // Rollback the transaction on exception
+        }
+        throw e;
+    } finally {
+      threadLocalConnection.remove();
+    }
+  }
 
-  // --- do not change the code above
+  public static Connection currentConnection() {
+    var connection = threadLocalConnection.get();
+    if (connection == null) {
+      throw new IllegalStateException("No active transaction.");
+    }
+    return connection;
+  }
 
-  //TODO
+  public static String findTableName(Class<?> beanClass){
+    var annotation = beanClass.getAnnotation(Table.class);
+    var result = annotation != null ? annotation.value() : beanClass.getSimpleName();
+    return result.toUpperCase(Locale.ROOT);
+  }
+
+  public static String findColumnName(PropertyDescriptor property){
+    var annotation =  property.getReadMethod().getAnnotation(Column.class);
+    var result = annotation != null ? annotation.value() : property.getName();
+    return result.toUpperCase(Locale.ROOT);
+  }
+
+  public static void createTable(Class<?> beanClass) throws SQLException {
+    Objects.requireNonNull(beanClass);
+    var connection = threadLocalConnection.get();
+    if (connection == null){
+      throw new IllegalStateException("Not in transaction");
+    }
+
+    var className = findTableName(beanClass);
+    var properties = Arrays.stream(Utils.beanInfo(beanClass).getPropertyDescriptors())
+            .filter(propertyDescriptor -> !propertyDescriptor.getName().equals("class"))
+            .map(propertyDescriptor -> {
+              var result = findColumnName(propertyDescriptor) + " " + TYPE_MAPPING.get(propertyDescriptor.getPropertyType());
+              if(propertyDescriptor.getPropertyType().isPrimitive()){
+                result += " NOT NULL";
+              }
+              if(propertyDescriptor.getReadMethod().isAnnotationPresent(Id.class)){
+                result += " PRIMARY KEY";
+              }
+              if(propertyDescriptor.getReadMethod().isAnnotationPresent(GeneratedValue.class)){
+                result += " AUTO_INCREMENT";
+              }
+              return result;
+            })
+            .toList();
+
+    var names = (properties.size() == 1) ?
+            "(" + properties.get(0) + " );"
+            : properties.stream()
+            .collect(Collectors.joining(", ", "(", ");"));
+
+    var statement = connection.createStatement();
+    var sqlRequest = "CREATE TABLE " + className + " " + names;
+    statement.execute(sqlRequest);
+    statement.close();
+  }
+
 }
