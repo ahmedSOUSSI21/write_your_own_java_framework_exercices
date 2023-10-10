@@ -1,24 +1,15 @@
 package com.github.forax.framework.orm;
 
 import javax.sql.DataSource;
-import java.beans.BeanInfo;
-import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.io.Serial;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Proxy;
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,7 +17,7 @@ public final class ORM {
   private ORM() {
     throw new AssertionError();
   }
-  private static ThreadLocal<Connection> threadLocalConnection = new ThreadLocal<>();
+  private static final ThreadLocal<Connection> THREAD_LOCAL = new ThreadLocal<>();
   @FunctionalInterface
   public interface TransactionBlock {
     void run() throws SQLException;
@@ -75,26 +66,27 @@ public final class ORM {
   public static void transaction(DataSource dataSource, TransactionBlock block) throws SQLException {
     Objects.requireNonNull(dataSource);
     Objects.requireNonNull(block);
-    Connection connection = null;
-    try {
-      connection = dataSource.getConnection();
-      connection.setAutoCommit(false); // Start a transaction
-      threadLocalConnection.set(connection); // Store the connection in ThreadLocal
-      block.run(); // Execute the transaction block
-      connection.commit(); // Commit the transaction
-    } catch (SQLException e) {
-      // Handle SQL exceptions
-        if (connection != null) {
-          connection.rollback(); // Rollback the transaction on exception
+    try(var connection = dataSource.getConnection()) {
+      connection.setAutoCommit(false);
+      THREAD_LOCAL.set(connection);
+      try {
+        block.run();
+        connection.commit();
+      } catch(RuntimeException | SQLException e) {
+        try {
+          connection.rollback();
+        } catch(SQLException suppressed) {
+          e.addSuppressed(suppressed);
         }
-        throw e;
-    } finally {
-      threadLocalConnection.remove();
+        throw Utils.rethrow(e);
+      } finally{
+        THREAD_LOCAL.remove();
+      }
     }
   }
 
   public static Connection currentConnection() {
-    var connection = threadLocalConnection.get();
+    var connection = THREAD_LOCAL.get();
     if (connection == null) {
       throw new IllegalStateException("No active transaction.");
     }
@@ -115,32 +107,27 @@ public final class ORM {
 
   public static void createTable(Class<?> beanClass) throws SQLException {
     Objects.requireNonNull(beanClass);
-    var connection = threadLocalConnection.get();
-    if (connection == null){
-      throw new IllegalStateException("Not in transaction");
-    }
+
+    var connection = currentConnection();
 
     var className = findTableName(beanClass);
-    var properties = Arrays.stream(Utils.beanInfo(beanClass).getPropertyDescriptors())
+    var names = Arrays.stream(Utils.beanInfo(beanClass).getPropertyDescriptors())
             .filter(propertyDescriptor -> !propertyDescriptor.getName().equals("class"))
             .map(propertyDescriptor -> {
-              var result = findColumnName(propertyDescriptor) + " " + TYPE_MAPPING.get(propertyDescriptor.getPropertyType());
+              var name = findColumnName(propertyDescriptor);
+              var type = TYPE_MAPPING.get(propertyDescriptor.getPropertyType());
+              var result = name + " " + type;
               if(propertyDescriptor.getPropertyType().isPrimitive()){
                 result += " NOT NULL";
-              }
-              if(propertyDescriptor.getReadMethod().isAnnotationPresent(Id.class)){
-                result += " PRIMARY KEY";
               }
               if(propertyDescriptor.getReadMethod().isAnnotationPresent(GeneratedValue.class)){
                 result += " AUTO_INCREMENT";
               }
+              if(propertyDescriptor.getReadMethod().isAnnotationPresent(Id.class)){
+                result += ",\nPRIMARY KEY ("+name+")";
+              }
               return result;
             })
-            .toList();
-
-    var names = (properties.size() == 1) ?
-            "(" + properties.get(0) + " );"
-            : properties.stream()
             .collect(Collectors.joining(", ", "(", ");"));
 
     var statement = connection.createStatement();
