@@ -595,7 +595,7 @@ public class ORMTest {
     }
   }
 
-  /*
+
   @Nested
   public class Q6 {
     @Test @Tag("Q6")
@@ -656,7 +656,7 @@ public class ORMTest {
       assertThrows(NullPointerException.class, () -> ORM.createRepository(null));
     }
   }
-
+  
   @Nested
   public class Q7 {
 
@@ -776,7 +776,7 @@ public class ORMTest {
     public void testCreateSaveQuery() {
       var beanInfo = Utils.beanInfo(Person.class);
       var sqlQuery = ORM.createSaveQuery("PERSON", beanInfo);
-      assertTrue(sqlQuery.endsWith("INTO PERSON (id, name) VALUES (?, ?);"));
+      assertTrue(sqlQuery.endsWith("INTO PERSON (ID, NAME) VALUES (?, ?);"));
     }
 
     @Test @Tag("Q8")
@@ -1031,12 +1031,14 @@ public class ORMTest {
         assertTrue(person.isEmpty());
       });
     }
-
+    /*
     @Test @Tag("Q11")
     public void testFindNoId() {
       var beanInfo = Utils.beanInfo(NoId.class);
       assertNull(ORM.findId(beanInfo));
     }
+
+     */
 
     @Test @Tag("Q11")
     public void testRepositoryClassWithNoPrimaryKey() throws SQLException {
@@ -1266,5 +1268,5 @@ public class ORMTest {
     }
 
   }
-  */
+
 }

@@ -4,9 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="74bd28e4-ede9-4bbb-a92f-dae249a45c06" name="Changes" comment="TP injector update">
+    <list default="true" id="74bd28e4-ede9-4bbb-a92f-dae249a45c06" name="Changes" comment="TP ORM till 5 better">
+      <change afterPath="$PROJECT_DIR$/orm/.attach_pid35430" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/orm/src/main/java/com/github/forax/framework/orm/ORM.java" beforeDir="false" afterPath="$PROJECT_DIR$/orm/src/main/java/com/github/forax/framework/orm/ORM.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/orm/src/test/java/com/github/forax/framework/orm/ORMTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/orm/src/test/java/com/github/forax/framework/orm/ORMTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -188,7 +191,10 @@
       <workItem from="1695711816727" duration="11057000" />
       <workItem from="1696323378695" duration="3297000" />
       <workItem from="1696499888385" duration="1853000" />
-      <workItem from="1696921567315" duration="2067000" />
+      <workItem from="1696921567315" duration="4154000" />
+      <workItem from="1696926569686" duration="5583000" />
+      <workItem from="1697033379483" duration="38000" />
+      <workItem from="1697526301424" duration="9310000" />
     </task>
     <task id="LOCAL-00001" summary="update to Java 21">
       <created>1694503015561</created>
@@ -229,7 +235,15 @@
       <option name="project" value="LOCAL" />
       <updated>1695116959679</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="TP ORM till 5 better">
+      <option name="closed" value="true" />
+      <created>1696924526242</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1696924526242</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -248,7 +262,6 @@
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
-    <MESSAGE value="add maven cache" />
     <MESSAGE value="remove cache from github action" />
     <MESSAGE value="fix typos in README.md" />
     <MESSAGE value="use List instead of Stream" />
@@ -273,7 +286,8 @@
     <MESSAGE value="tp mapper part 1.1" />
     <MESSAGE value="TP injector" />
     <MESSAGE value="TP injector update" />
-    <option name="LAST_COMMIT_MESSAGE" value="TP injector update" />
+    <MESSAGE value="TP ORM till 5 better" />
+    <option name="LAST_COMMIT_MESSAGE" value="TP ORM till 5 better" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
