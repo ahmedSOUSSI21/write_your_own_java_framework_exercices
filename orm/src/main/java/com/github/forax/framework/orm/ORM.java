@@ -184,7 +184,6 @@ public final class ORM {
                       .stream()
                       .findFirst();
             }
-
             throw new IllegalStateException("unknown method " + method);
           }
         };
